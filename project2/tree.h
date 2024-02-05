@@ -1,0 +1,47 @@
+#ifndef FUNC_H
+#define FUNC_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+
+FILE *in;
+FILE *out;
+
+typedef enum {
+    LINE,
+    NAME,
+    STRING,
+    CHAR_TYPE,
+    INT_TYPE,
+    FLOAT_TYPE,
+    NOTHING,
+} Node_TYPE;
+
+typedef struct Node{
+    int visited;
+    char* name;
+    char* str_value;
+    Node_TYPE type;
+
+    int sib_num;
+    int sub_num;
+    int linenum;
+    struct Node* child;
+    struct Node* sibling;
+
+    union{
+        char* char_value;
+        int int_value;
+        float float_value;
+    };
+}Node;
+
+Node* New_Node(int line, char* name, char* value, Node_TYPE type);
+Node* New_Parent_Node(char* name, int line, Node* child);
+void Connect_Nodes(int num, ...);
+void Node_print(FILE *file_pointer, Node* head_node, int space);
+void freeAST(Node* head);
+void Type_B_Error(char* msg);
+
+#endif
